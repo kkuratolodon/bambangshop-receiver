@@ -66,7 +66,7 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Create Notification database and Notification repository struct skeleton.`
     -   [x] Commit: `Implement add function in Notification repository.`
     -   [x] Commit: `Implement list_all_as_string function in Notification repository.`
-    -   [ ] Write answers of your learning module's "Reflection Subscriber-1" questions in this README.
+    -   [x] Write answers of your learning module's "Reflection Subscriber-1" questions in this README.
 -   **STAGE 3: Implement services and controllers**
     -   [ ] Commit: `Create Notification service struct skeleton.`
     -   [ ] Commit: `Implement subscribe function in Notification service.`
@@ -85,5 +85,11 @@ This is the place for you to write reflections:
 ### Mandatory (Subscriber) Reflections
 
 #### Reflection Subscriber-1
+1. In this tutorial, we used RwLock<> to synchronise the use of Vec of Notifications. Explain why it is necessary for this case, and explain why we do not use Mutex<> instead?
+   
+   Dalam tutorial ini, `RwLock<>` digunakan untuk memberikan kemampuan kepada banyak *thread* agar dapat membaca data secara bersamaan, dengan membatasi akses penulisan hanya kepada satu *thread* pada satu waktu. Hal ini sangat efektif untuk situasi di mana akses baca jauh lebih sering terjadi dibandingkan dengan akses tulis. Ini berbeda dengan `Mutex<>`, yang membatasi akses pada suatu data hanya kepada satu *thread* baik untuk membaca maupun menulis, yang berarti paralelisme baca tidak dapat tercapai. Oleh karena itu, `RwLock<>` lebih efisien untuk kasus di mana `Vec<Notification>` umumnya sering dibaca oleh banyak *thread* dan tidak sering diubah, sementara `Mutex<>` akan membatasi efisiensi ini karena tidak memungkinkan paralelisme pada akses baca.
 
+2. In this tutorial, we used lazy_static external library to define Vec and DashMap as a “static” variable. Compared to Java where we can mutate the content of a static variable via a static function, why did not Rust allow us to do so?
+    
+    Dalam Rust, variabel statis memiliki pembatasan karena harus thread-safe, memiliki lifetime `'static`, dan biasanya bersifat immutable untuk mencegah race condition. Untuk mengatasi keterbatasan ini, kita menggunakan `lazy_static` yang memungkinkan inisialisasi variabel singleton—variabel yang hanya diinisialisasi saat pertama kali digunakan dan hanya ada satu instance dalam program. Berbeda dengan Java, di mana variabel statis bisa diubah langsung dan mungkin membutuhkan strategi khusus untuk menjaga keamanan thread dalam penggunaan multithreaded.
 #### Reflection Subscriber-2
