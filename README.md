@@ -77,7 +77,7 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Implement receive function in Notification controller.`
     -   [x] Commit: `Implement list_messages function in Notification service.`
     -   [x] Commit: `Implement list function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
+    -   [x] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -92,4 +92,17 @@ This is the place for you to write reflections:
 2. In this tutorial, we used lazy_static external library to define Vec and DashMap as a “static” variable. Compared to Java where we can mutate the content of a static variable via a static function, why did not Rust allow us to do so?
     
     Dalam Rust, variabel statis memiliki pembatasan karena harus thread-safe, memiliki lifetime `'static`, dan biasanya bersifat immutable untuk mencegah race condition. Untuk mengatasi keterbatasan ini, kita menggunakan `lazy_static` yang memungkinkan inisialisasi variabel singleton—variabel yang hanya diinisialisasi saat pertama kali digunakan dan hanya ada satu instance dalam program. Berbeda dengan Java, di mana variabel statis bisa diubah langsung dan mungkin membutuhkan strategi khusus untuk menjaga keamanan thread dalam penggunaan multithreaded.
+    
 #### Reflection Subscriber-2
+
+1. Have you explored things outside of the steps in the tutorial, for example: src/lib.rs? If not, explain why you did not do so. If yes, explain things that you have learned from those other parts of code.
+   
+   Saya telah mengeksplorasi bagian lain di luar tutorial, termasuk src/lib.rs dalam Rust. File ini sering digunakan sebagai pusat untuk mendefinisikan elemen-elemen penting yang diperlukan oleh seluruh aplikasi. Dari lib.rs, saya mempelajari bagaimana Rust memudahkan pengelolaan error dengan menggunakan pub type Result<T, E=Error> = std::result::Result<T, E>;, yang menetapkan Error sebagai tipe error default. Ini memungkinkan penyederhanaan dalam penanganan error di seluruh aplikasi. Selain itu, saya juga menemukan definisi struktur seperti ErrorResponse, yang digunakan untuk merepresentasikan respons kesalahan yang termasuk status code dan pesan error. Hal ini menunjukkan bagaimana Rust mengorganisir struktur kode secara terpusat, yang memudahkan pengelolaan konfigurasi aplikasi, URL root, dan pengaturan singleton, sehingga memfasilitasi akses dan penggunaan informasi ini oleh bagian lain dari aplikasi.
+
+2. Since you have completed the tutorial by now and have tried to test your notification system by spawning multiple instances of Receiver, explain how Observer pattern eases you to plug in more subscribers. How about spawning more than one instance of Main app, will it still be easy enough to add to the system?
+   
+   Pola Observer sangat membantu dalam menambahkan **Subscriber** baru dengan mudah. Caranya adalah dengan menambahkannya ke dalam daftar **Observer** yang telah ada. Artinya, setiap ada **Subscriber** baru yang ingin berlangganan produk tertentu, saya hanya perlu menambahkannya ke daftar tersebut. Pola ini dirancang untuk mengikuti *Open-Closed Principle*, yang memudahkan penambahan **Subscriber** baru tanpa perlu mengubah banyak kode yang sudah ada. Saat menjalankan lebih dari satu instance dari aplikasi utama, setiap instance beroperasi secara independen dengan sistem pemberitahuan masing-masing, yang memungkinkan mereka berfungsi tanpa harus berbagi notifikasi. Namun, jika perlu untuk berbagi notifikasi antar-instance, diperlukan mekanisme penyimpanan bersama. Jika perlu menambahkan **Subscriber** di lebih dari satu instance *Main App*, mereka bisa dengan mudah didaftarkan melalui API yang relevan untuk setiap aplikasi yang berbeda.
+
+3. Have you tried to make your own Tests, or enhance documentation on your Postman collection? If you have tried those features, tell us whether it is useful for your work (it can be your tutorial work or your Group Project).
+    
+    Saya telah membuat tes sendiri dan meningkatkan dokumentasi pada koleksi Postman saya. Fitur ini sangat berguna, terutama dalam memastikan bahwa API yang saya kembangkan berfungsi sesuai ekspektasi sebelum diimplementasikan lebih lanjut. Dengan menulis tes otomatis di Postman, saya dapat secara efektif memvalidasi respons dari API, memeriksa status kode, dan memastikan bahwa output data sesuai dengan yang diharapkan.
